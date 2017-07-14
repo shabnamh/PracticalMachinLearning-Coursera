@@ -4,11 +4,13 @@ output: html_document
 ---
 
 ##Introducing the Data
+
 The data consists of accelerometer measurements of 6 male participants lifting barbell in five different ways while four accelerometrs record them. There are fives classes in the data set, class A is the correct manner and classes B to E each represent a mistake in lifting the barbell.
 
 The goal is to use the accelerometer measurements gathered on belt, forearm, arm,and dumbbell and predict  which class the barbell lift data belongs to (in which manner this activity was performed)
 
 ##Data Cleaning and Exploratory Analysis
+
 ```{r}
 library(caret); library(ggplot2)
 ```
@@ -48,7 +50,9 @@ testing <- testing[, -(1:5)]
 ```
 
 ##The Model
+
 ###Model 1
+
 I decided to use the **Random Forest** as the fitting method and 3-fold cross validation to select optimal tuning parameters for the model.
 
 ```{r}
@@ -69,6 +73,7 @@ plot(confMat1$table, col= confMat1$byClass, main = paste("Random Forest Result- 
 The random forest gives an overall accuracy of `r 100 * (round(confMat1$overall['Accuracy'], 4))`% and out of sample error rate of `r 100 - 100 * (round(confMat1$overall['Accuracy'], 4))`%. Random Forest seems to be a great choice, however I will try to the generalized boosted model as well to compare.
 
 ###Model 2
+
 I am going to apply **Generalized Boosted Regression Model** as well with the same cross validation method and see how it compares with Random Forest.
 
 ```{r, results= "hide"}
@@ -88,9 +93,11 @@ plot(confMat2$table, col= confMat2$byClass, main = paste("General Boosted Regres
 The Generalized Boosted Regression Model has an accuracy of `r 100 * (round(confMat2$overall['Accuracy'], 4))`% and out of sample error rate of `r 100 - 100 * (round(confMat2$overall['Accuracy'], 4))`%. 
 
 ###Chosen Model
+
 **Random Forest** has a higher accuracy in predicting and is the model I'm going to apply to testing data set.
 
 ##Applying the prediction model to the Test data set
+
 ```{r}
 predT <- predict(mod1, newdata = Testing)
 predT
